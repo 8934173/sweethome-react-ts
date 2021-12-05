@@ -124,7 +124,6 @@ export default function Account (): JSX.Element {
             current: currPage,
             list: list
         })
-        console.log(data)
     }
 
     return (

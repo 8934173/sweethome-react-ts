@@ -67,7 +67,6 @@ export default class Vaccines extends React.Component<any, IState> {
             VaccineTopData: data.VaccineTopData,
             VaccineSituationData: data.VaccineSituationData
         }))
-        console.log(data)
     }
 
     VaccinesTopElement() {

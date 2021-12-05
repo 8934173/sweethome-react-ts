@@ -3,10 +3,12 @@ import {Spin} from "antd";
 import './loading.less'
 import {connect} from "react-redux";
 
-const Loading: FC = (props: Readonly<any>) => <Spin spinning={props.loading} className='loading-spin'/>
+type LoadingType = {loading: boolean}
+
+const Loading: FC<LoadingType> = (props: Readonly<LoadingType>) => <Spin spinning={props.loading} className='loading-spin'/>
 
 export default connect(
-   ({loading}: any) => ({
+   ({loading}: LoadingType) => ({
        loading: loading
    })
 )(Loading)

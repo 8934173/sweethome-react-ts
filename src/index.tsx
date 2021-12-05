@@ -20,9 +20,9 @@ ReactDOM.render(
                                         <Route
                                             path={it.path}
                                             exact={it.exact}
-                                            render={props => (
-                                                <it.component {...props} children={it.children}/>
-                                            )}
+                                            render={props => {
+                                                return (<it.component {...props} children={it.children}/>)
+                                            }}
                                         />
                                     </React.Fragment>
                                 )

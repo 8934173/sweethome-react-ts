@@ -50,7 +50,6 @@ const StudentClockInDetails = forwardRef((props: IProps, ref: ForwardedRef<baseI
                 return it
             })
         })
-        console.log(data)
     }
 
     useImperativeHandle(ref, () => ({

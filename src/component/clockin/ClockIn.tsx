@@ -85,7 +85,6 @@ export default function ClockIn ():JSX.Element {
                 return it
             })
         })
-        console.log(data)
         if (list) setClock(list?.some(it => it.clockInTime === SweetUtils.getLocalTime(new Date(), 'YYYY-mm-dd')))
     }
 

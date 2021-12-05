@@ -17,7 +17,6 @@ const Detail = forwardRef((props: IProps, ref: ForwardedRef<baseInstance<LR>>) =
 
     useImperativeHandle(ref, () => ({
         init: (visible: boolean, data?: LR) => {
-            console.log(visible)
             setDrawerVisible(visible)
             setCurrentDate(data as LR)
         }

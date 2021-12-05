@@ -44,7 +44,6 @@ const RevertAddAndUpdate = forwardRef((props: IProps, ref: ForwardedRef<baseInst
                 await instance.post(UrlDict.applyForRevert, e)
                 message.success("提交成功，请等待审核结果!")
                 setVisible(false)
-                console.log(e)
                 props.refresh()}}>
                 <Form.Item
                     label={'申请人'}

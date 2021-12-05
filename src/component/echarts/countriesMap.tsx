@@ -5,8 +5,8 @@ import {ECBasicOption} from "echarts/types/dist/shared";
 import {EChartsType} from "echarts/types/dist/echarts";
 import instance from "src/request/index";
 import UrlDict from 'src/request/urlDict'
-import {AxiosResponse} from "axios";
 import {Card, Col, Row, Statistic, Table, Tag} from 'antd'
+import {R} from "src/utils/sysInterface";
 
 interface IState {
     nameMap: {}
@@ -202,7 +202,6 @@ export default class CountriesMap extends React.Component<any, IState> {
     }
     getWoldJson() {
         import('src/assets/country.json').then(af => {
-            console.log(af)
             echarts.registerMap('world', JSON.stringify(af))
             import('src/assets/world.json').then((res) => {
                 let e = echarts.init(document.getElementById('country') as HTMLElement)
@@ -220,15 +219,17 @@ export default class CountriesMap extends React.Component<any, IState> {
         })()
     }
     async getData() {
-        const {data}: AxiosResponse = await instance.get(UrlDict.epidemic)
-        this.setState((): {countryTotal: Total, countryList: Array<object>, time: string} => ({
-            countryTotal: data.othertotal||{},
-            countryList: (data.worldlist||[]).map((it: any, index: number) => {
-                it.key = index
-                return it
-            }),
-            time: data.cachetime
-        }))
+        const {data, code}: R<any> = await instance.get(UrlDict.epidemic)
+        if (code === 200 && data) {
+            this.setState((): {countryTotal: Total, countryList: Array<object>, time: string} => ({
+                countryTotal: data.othertotal||{},
+                countryList: (data.worldlist||[]).map((it: any, index: number) => {
+                    it.key = index
+                    return it
+                }),
+                time: data.cachetime
+            }))
+        }
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {

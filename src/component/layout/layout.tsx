@@ -22,13 +22,15 @@ const MyLayout: FC = (props:PropsWithChildren<any>) => {
             </Header>
             <Content>
                 <Loading />
-                <Suspense fallback={<div></div>}>
+                <Suspense fallback={false}>
                     {
                         Array.from(children).map((it: any, index: number) => {
                             return (
                                 <React.Fragment key={index}>
-                                    <Route path={it.path} exact={it.exact} component={it.component}/>
-
+                                    <Route path={it.path} exact={it.exact} component={it.component} render={(pr) => {
+                                        document.title = it.title
+                                        return it.component
+                                    }}/>
                                 </React.Fragment>
                             )
                         })

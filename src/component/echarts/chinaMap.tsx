@@ -2,13 +2,13 @@ import React from "react";
 import instance from "src/request";
 import * as echarts from 'echarts'
 import {ECBasicOption} from "echarts/types/dist/shared";
-import {AxiosResponse} from "axios";
 import Epidemic from "src/utils/epidemic";
 import {EChartsType} from "echarts/types/dist/echarts";
 import {Card, Statistic, Row, Col, Table, Tag} from 'antd'
-import UrlDict from "../../request/urlDict";
+import UrlDict from "src/request/urlDict";
 import './chinaMap.less'
 import TopEcharts from "./topEcharts";
+import {R} from "src/utils/sysInterface";
 
 interface IState {
     epiData: object,
@@ -179,34 +179,38 @@ export default class ChinaMap extends React.Component<any, IState> {
     }
 
     async epidemic() {
-        const {data}: AxiosResponse = await instance.get('/third/epidemic')
-        const list: Array<object> = Epidemic.completion(data.list || [])
-        this.setState((): { epiData: object; importedCase: []; list: Array<object> } => {
-            return ({
-                epiData: data,
-                list: list,
-                importedCase: data.jwsrTop
-            });
-        })
+        const {data, code}: R<any> = await instance.get('/third/epidemic')
+        if (code === 200) {
+            const list: Array<object> = Epidemic.completion(data.list || [])
+            this.setState((): { epiData: object; importedCase: []; list: Array<object> } => {
+                return ({
+                    epiData: data,
+                    list: list,
+                    importedCase: data.jwsrTop
+                });
+            })
+        }
     }
     async epidemicByTencent() {
-        const {data}: AxiosResponse = await instance.get(UrlDict.epidemicByTencent)
-        let ten = JSON.parse(data)
-        const list: Array<object> = Epidemic.completion(JSON.parse(data).areaTree[0].children).map((it: any, index: number) => {
-            it.value = it.total.nowConfirm
-            it.key = index
-            it.children.map((ch: any, i: number) => {
-                ch.key = i
-                return ch
+        const {data, code}: R<any> = await instance.get(UrlDict.epidemicByTencent)
+        if (code === 200) {
+            let ten = JSON.parse(data)
+            const list: Array<object> = Epidemic.completion(JSON.parse(data).areaTree[0].children).map((it: any, index: number) => {
+                it.value = it.total.nowConfirm
+                it.key = index
+                it.children.map((ch: any, i: number) => {
+                    ch.key = i
+                    return ch
+                })
+                return it
             })
-            return it
-        })
-        this.setState(() => ({
-            chinaMapList: list,
-            UpdateTime: ten.lastUpdateTime,
-            chinaAdd: ten.chinaAdd,
-            chinaTotal: ten.chinaTotal
-        }))
+            this.setState(() => ({
+                chinaMapList: list,
+                UpdateTime: ten.lastUpdateTime,
+                chinaAdd: ten.chinaAdd,
+                chinaTotal: ten.chinaTotal
+            }))
+        }
     }
     getGeo() {
         import('src/assets/china.json').then(data => {

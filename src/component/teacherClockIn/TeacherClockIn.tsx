@@ -15,12 +15,9 @@ export default function TeacherClockIn () {
     const [classList, setClassList] = useState<ClassEntity[]>();
     const ref = useRef<baseInstance<StudentClockIn>>();
     useEffect(() => {
-
         (async () => {
             const {data}: R<any> = await instance.get(UrlDict.getClockInByTeacher)
             if (data.length > 0) setClassList(data)
-            console.log(data)
-
         })()
     }, [])
     return (

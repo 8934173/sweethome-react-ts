@@ -101,7 +101,6 @@ export default function Inout (): JSX.Element {
                                                 okText: '确定',
                                                 cancelText: '取消',
                                                 onOk: async () => {
-                                                    console.log(id, it)
                                                     await instance.post(url+id)
                                                     message.success('删除成功!')
                                                     await getList({}, activeKey)
